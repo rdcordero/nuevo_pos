@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class CajaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:ver cajas')->only(['index', 'show']);
+        $this->middleware('permission:crear cajas')->only(['create', 'store']);
+        $this->middleware('permission:editar cajas')->only(['edit', 'update']);
+        $this->middleware('permission:eliminar cajas')->only('destroy');
+    }
     public function index()
     {
         $empresaId = session('empresa_activa');
@@ -91,4 +98,3 @@ class CajaController extends Controller
         }
     }
 }
-

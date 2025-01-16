@@ -99,6 +99,21 @@ class PermissionSeeder extends Seeder
             'ver reportes',
             'exportar reportes',
             'ver estadisticas',
+
+            // Permisos para cajas
+            'ver cajas',
+            'crear cajas',
+            'editar cajas',
+            'eliminar cajas',
+
+            // Permisos para turnos
+            'ver turnos',
+            'crear turnos',
+            'editar turnos',
+            'eliminar turnos',
+            'cerrar turnos'
+
+
         ];
 
         // Crear los permisos

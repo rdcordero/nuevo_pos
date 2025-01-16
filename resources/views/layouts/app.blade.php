@@ -101,11 +101,21 @@
                                 </a>
                             </li>
                             @endcan
+                            @can('ver clientes')
                             <li>
                                 <a href="{{ route('clientes.index') }}" class="dropdown-item">
                                     <i class="nav-icon fas fa-users"></i>Clientes
                                 </a>
                             </li>
+                            @endcan
+                            @can('ver turnos')
+                                <li>
+                                <a href="{{ route('turnos.index') }}" class="dropdown-item">
+                                    <i class="nav-icon fas fa-clock"></i>Turnos
+                                </a>
+                            </li> 
+                            @endcan
+                           
                         </ul>
                     </li>
                     @endif

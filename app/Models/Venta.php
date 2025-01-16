@@ -18,6 +18,7 @@ class Venta extends Model
         'sucursal_id',
         'cliente_id',
         'usuario_id',
+        'turno_id', // Agregar turno_id
         'tipo_documento',
         'serie',
         'numero',
@@ -60,6 +61,12 @@ class Venta extends Model
     {
         return $this->belongsTo(Cliente::class);
     }
+
+    public function turno(): BelongsTo // Agregar relación con turno
+    {
+        return $this->belongsTo(Turno::class);
+    }
+
 
     public function usuario(): BelongsTo
     {

@@ -19,6 +19,7 @@ use App\Http\Controllers\ImpuestoController;
 use App\Http\Controllers\InventarioMovimientoController;
 use App\Http\Controllers\SubCategoriaController;
 use App\Http\Controllers\TransferenciaController;
+use App\Http\Controllers\TurnoController;
 use App\Models\AjusteInventarioDetalle;
 use Illuminate\Support\Facades\Route;
 
@@ -79,12 +80,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('clientes', ClienteController::class);
     Route::get('/api/paises/{pais}/actividades-economicas', [ClienteController::class, 'getActividadesEconomicas'])
-    ->name('api.paises.actividades-economicas')
+        ->name('api.paises.actividades-economicas')
     ;
 
     //Rutas Cajas
     Route::resource('cajas', CajaController::class);
 
+    // Rutas para Turnos
+    Route::resource('turnos', TurnoController::class);
+    Route::put('turnos/{turno}/cerrar', [TurnoController::class, 'cerrar'])->name('turnos.cerrar');
+    Route::get('turnos/{turno}/reporte', [TurnoController::class, 'reporte'])->name('turnos.reporte');
 
     // Rutas para Ventas
     Route::group(['middleware' => ['permission:realizar venta']], function () {

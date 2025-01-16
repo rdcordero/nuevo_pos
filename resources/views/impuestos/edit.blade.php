@@ -1,0 +1,88 @@
+@extends('layouts.app')
+
+@section('title', 'Editar Impuesto')
+
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Editar Impuesto</h5>
+                </div>
+
+                <div class="card-body">
+                    <form action="{{ route('impuestos.update', $impuesto) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" 
+                                   class="form-control @error('nombre') is-invalid @enderror" 
+                                   id="nombre" 
+                                   name="nombre" 
+                                   value="{{ old('nombre', $impuesto->nombre) }}" 
+                                   required>
+                            @error('nombre')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <textarea class="form-control @error('descripcion') is-invalid @enderror" 
+                                      id="descripcion" 
+                                      name="descripcion" 
+                                      rows="3">{{ old('descripcion', $impuesto->descripcion) }}</textarea>
+                            @error('descripcion')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="porcentaje" class="form-label">Porcentaje</label>
+                            <div class="input-group">
+                                <input type="number" 
+                                       class="form-control @error('porcentaje') is-invalid @enderror" 
+                                       id="porcentaje" 
+                                       name="porcentaje" 
+                                       value="{{ old('porcentaje', $impuesto->porcentaje) }}" 
+                                       step="0.01" 
+                                       min="0" 
+                                       max="100" 
+                                       required>
+                                <span class="input-group-text">%</span>
+                                @error('porcentaje')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" 
+                                       class="form-check-input" 
+                                       id="activo" 
+                                       name="activo" 
+                                       value="1" 
+                                       {{ old('activo', $impuesto->activo) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="activo">Activo</label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ route('impuestos.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

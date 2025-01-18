@@ -39,6 +39,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+
+
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
@@ -159,4 +161,37 @@ Route::middleware(['auth'])->group(function () {
         // Ajustes de inventario
         Route::resource('ajustes', AjusteInventarioController::class);
     });
+
+    Route::get('/debug/session', function () {
+        
+        
+        return response()->json([
+            'session_id' => session()->getId(),
+            'session_data' => [
+                'empresa_activa' => session('empresa_activa'),
+                'sucursal_activa' => session('sucursal_activa'),
+                'all_session_data' => session()->all()
+            ],
+            'user_data' => [
+                'id' => auth()->id(),
+                'empresa_default' => auth()->user()->empresa_default_id,
+                'sucursal_default' => auth()->user()->sucursal_default_id
+            ],
+            'database_session' => DB::table('sessions')
+                ->where('id', session()->getId())
+                ->first(),
+            'request_info' => [
+                'ip' => request()->ip(),
+                'user_agent' => request()->userAgent(),
+                'headers' => request()->headers->all()
+            ]
+        ]);
+    });
+    
+    // Vista de diagnóstico
+    Route::get('/debug/monitor', function () {
+       
+        return view('debug.session-monitor');
+    });
+    
 });

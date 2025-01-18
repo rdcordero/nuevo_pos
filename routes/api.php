@@ -19,4 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/ventas/correlativo/{tipoDocumento}', [VentaController::class, 'getCorrelativo']);
+// Agregar esta ruta con el middleware web
+Route::get('/ventas/correlativo/{tipoDocumento}', [VentaController::class, 'getCorrelativo'])
+    ->middleware(['web', 'auth'])
+    ->name('ventas.correlativo');

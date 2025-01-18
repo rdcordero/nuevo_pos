@@ -13,9 +13,12 @@ use App\Models\CorrelativoDocumento;
 use App\Models\TipoDocumentoVenta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class VentaController extends Controller
 {
+    
     public function index()
     {
         $empresaId = session('empresa_activa');
@@ -34,7 +37,7 @@ class VentaController extends Controller
     {
         $empresaId = session('empresa_activa');
         $sucursalId = session('sucursal_activa');
-    
+       // dd($empresaId);
         // Obtener solo los tipos de documento que tienen correlativos disponibles
         $tiposDocumentoIds = CorrelativoDocumento::where('empresa_id', $empresaId)
             ->where('sucursal_id', $sucursalId)
@@ -72,7 +75,7 @@ class VentaController extends Controller
             $empresaId = session('empresa_activa');
             $sucursalId = session('sucursal_activa');
             $userId = auth()->id();
-
+           
             // Crear la venta
             $venta = new Venta($request->validated());
             $venta->empresa_id = $empresaId;
@@ -293,12 +296,19 @@ class VentaController extends Controller
         }
     }
 
+    
     public function getCorrelativo(Request $request, $tipoDocumentoId)
     {
+
+   
+        
         try {
             $empresaId = session('empresa_activa');
+
+          // dd(session('empresa_activa'));
             $sucursalId = session('sucursal_activa');
-    
+            //$d = Session::get('empresa_activa');
+            //dd($d);
             $correlativo = CorrelativoDocumento::where('empresa_id', $empresaId)
                 ->where('sucursal_id', $sucursalId)
                 ->where('tipo_documento_id', $tipoDocumentoId)

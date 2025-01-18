@@ -108,5 +108,29 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('sucursalActiva', $sucursalActiva);
             }
         });
+
+        $this->app['session']->extend('database', function ($app) {
+            $connection = $app['config']['session.connection'];
+            $table = $app['config']['session.table'];
+            $lifetime = $app['config']['session.lifetime'];
+            $handler = new \Illuminate\Session\DatabaseSessionHandler(
+                $app['db']->connection($connection), $table, $lifetime, $app
+            );
+
+            // Agregar logging cuando la sesión se regenera o destruye
+            $handler->setExists(function ($id) {
+                $exists = \DB::table('sessions')->where('id', $id)->exists();
+                if (!$exists) {
+                    Log::channel('session_debug')->warning('Session not found in database', [
+                        'session_id' => $id,
+                        'time' => now()->toDateTimeString(),
+                        'user_id' => auth()->id() ?? 'guest'
+                    ]);
+                }
+                return $exists;
+            });
+
+            return $handler;
+        });
     }
 }
